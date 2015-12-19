@@ -1,7 +1,7 @@
 SHELL := /bin/bash
-PYTHON_VERSION = 3.5.1
-PYTHON  = /opt/pyenv/versions/$(PYTHON_VERSION)/bin/python
-PWD = $(shell pwd)
+PYTHON_VERSION ?= 3.5.1
+PYTHON ?= $(PYENV_ROOT)/versions/$(PYTHON_VERSION)/bin/python
+PWD := $(shell pwd)
 
 all: .python_version config.ini duckdns.service venv
 
