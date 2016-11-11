@@ -1,15 +1,17 @@
 """duckdns.py
+
 Script to update DNS from DuckDNS.org
 """
 
-import requests
+import configparser
 import logging
 import logging.handlers
-import configparser
+import urllib.parse
+import urllib.request
 
 
-logging.basicConfig(format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                    datefmt='%Y%m%d %H:%M:%S',
+logging.basicConfig(format=('%(asctime)s,%(msecs)d %(name)s %(levelname)s '
+                    '%(message)s'), datefmt='%Y%m%d %H:%M:%S',
                     level=logging.INFO)
 logger = logging.getLogger('duckdns.py')
 handler = logging.handlers.SysLogHandler()
@@ -21,8 +23,10 @@ config.read('config.ini')
 domain = config['DUCKDNS']['domain']
 token = config['DUCKDNS']['token']
 
-url = 'https://www.duckdns.org/update'
-payload = {'domains': domain, 'token': token}
-update = requests.get(url, params=payload)
+payload = urllib.parse.urlencode({'domains': domain, 'token': token})
+url = 'https://www.duckdns.org/update?{}'.format(payload)
 
-logger.info(update.text)
+with urllib.request.urlopen(url) as response:
+    data = response.read().decode()
+
+logger.info(data)
