@@ -6,6 +6,7 @@ Script to update DNS from DuckDNS.org
 import configparser
 import logging
 import logging.handlers
+import ssl
 import urllib.parse
 import urllib.request
 
@@ -26,7 +27,8 @@ token = config['DUCKDNS']['token']
 payload = urllib.parse.urlencode({'domains': domain, 'token': token})
 url = 'https://www.duckdns.org/update?{}'.format(payload)
 
-with urllib.request.urlopen(url) as response:
+context = ssl._create_unverified_context()
+with urllib.request.urlopen(url, context=context) as response:
     data = response.read().decode()
 
 logger.info(data)

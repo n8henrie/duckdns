@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-PYTHON_VERSION ?= 3.5.1
+PYTHON_VERSION ?= 3.6.2
 PYTHON ?= $(PYENV_ROOT)/versions/$(PYTHON_VERSION)/bin/python
 PWD := $(shell pwd)
 
